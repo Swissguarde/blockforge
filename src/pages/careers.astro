@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import ContentWrap from "../components/ContentWrap.astro";
+import Hero from "../components/Hero.astro";
+import DefaultLayout from "../layouts/Default.astro";
+import Card from "../components/card";
+import Tag from "../components/tag";
+import {getColorFromPositionType, getPostColorFromCategory } from "../utils/post-utils";
+import {motion} from "framer-motion"
+
+const positions = await getCollection("positions")
+---
+
+<DefaultLayout>
+    <Hero>
+        <p class="uppercase font-extrabold text-center text-zinc-500 tracking-wider">Join the team</p>
+        <h1 class="font-heading font-black text-5xl md:text-6xl lg:text-7xl text-center m-4">We are hiring</h1>
+        <p class="text-center text-xl md:text-2xl mt-6 max-w-xl mx-auto text-zinc-400">We are always looking for talented individuals passionate about building blockchain products that make a difference.</p>
+    </Hero>
+    <ContentWrap>
+        <div class="flex flex-col gap-3">
+            {positions.map(({data: {category, description, type, title, remote}})=> 
+            <motion.a client:load
+            initial={{opacity: 0, y:20}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true, amount: 0.5}}
+           transition={{duration: 0.5, ease: "easeIn"}}
+             href="/contact" className="cursor-pointer">
+            <Card color={getPostColorFromCategory(category)} buttonText="Apply Now">
+                <div class="flex items-center gap-3">
+                    {remote && (<Tag>Remote</Tag>)}<Tag color={getColorFromPositionType(type)}>{type}</Tag>
+
+                </div>
+                <h2 class="text-3xl font-black font-heading mt-6 ">{title}</h2>
+                <p class="text-xl text-zinc-400 mt-4">{description}</p>
+            </Card>
+            </motion.a>
+            )}
+
+
+            
+        </div>
+    </ContentWrap>
+</DefaultLayout>

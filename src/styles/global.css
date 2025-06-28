@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-zinc-900 font-body text-zinc-300 antialiased;
+  }
+}
+
+input {
+  background: transparent;
+}
+
+textarea {
+  background: transparent;
+}
